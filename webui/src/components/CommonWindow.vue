@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { h, reactive, ref } from 'vue';
+import { h, reactive, ref, useTemplateRef } from 'vue';
 
 const props = defineProps<{
   x: number;
@@ -7,6 +7,8 @@ const props = defineProps<{
 }>();
 
 const HOVER_RANGE = 10;
+
+const el = useTemplateRef('window');
 
 const pos = reactive({
   x: props.x,
@@ -134,6 +136,11 @@ const resize = (e: MouseEvent) => {
   }
 };
 
+const focus = () => {
+  console.log('focus');
+  el.value!.style.zIndex += 1;
+};
+
 const out = (e: MouseEvent) => {
   cursor.value = 'auto';
 };
@@ -162,6 +169,8 @@ const out = (e: MouseEvent) => {
     v-on:mouseover="hover"
     v-on:mouseout="out"
     v-on:mousemove="resize"
+    v-on:click="focus"
+    ref="window"
   >
     <div
       style="
